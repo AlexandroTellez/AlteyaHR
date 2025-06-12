@@ -1,0 +1,46 @@
+# ===============================
+# NODE / ANGULAR (frontend)
+# ===============================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/cache/
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+
+# IDE/Editor files (VSCode, JetBrains, etc.)
+.vscode/
+.idea/
+
+# ===============================
+# JAVA / SPRING BOOT (backend)
+# ===============================
+/backend/target/
+/backend/.mvn/
+/backend/mvnw
+/backend/mvnw.cmd
+
+# Ignorar configuración sensible
+/backend/src/main/resources/application.properties
+
+# ===============================
+# SISTEMA / GLOBAL
+# ===============================
+.DS_Store
+Thumbs.db
+*.log
+*.class
+*.jar
+*.war
+*.iml
+
+# ===============================
+# OS-SPECIFIC
+# ===============================
+# macOS
+**/.DS_Store
+
+# Windows
+**/Thumbs.db
+**/ehthumbs.db
+**/desktop.ini
