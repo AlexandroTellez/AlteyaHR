@@ -18,25 +18,28 @@ public class EmployeeService {
         this.employeeRepo = employeeRepo;
     }
 
-    public Employee addEmployee(Employee employee){
+    public Employee addEmployee(Employee employee) {
         employee.setEmployeeCode(UUID.randomUUID().toString());
         return employeeRepo.save(employee);
     }
 
-    public List<Employee> findAllEmployees(){
+    public List<Employee> findAllEmployees() {
         return employeeRepo.findAll();
     }
 
-    public Employee findEmployeeById(Long id){
+    public Employee findEmployeeById(Long id) {
         return employeeRepo.findEmployeeById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
     }
 
-    public Employee updateEmployee(Employee employee){
+    public Employee updateEmployee(Employee employee) {
         return employeeRepo.save(employee);
     }
 
-    public void deleteEmployee(Long id){
-        employeeRepo.deleteEmployeeById(id);
+    public void deleteEmployee(Long id) {
+        if (!employeeRepo.existsById(id)) {
+            throw new UserNotFoundException("User with id " + id + " not found");
+        }
+        employeeRepo.deleteById(id);
     }
 }
