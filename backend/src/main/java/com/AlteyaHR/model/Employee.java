@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+import jakarta.validation.constraints.*;
+
 
 @Entity
 public class Employee implements Serializable {
@@ -18,26 +19,50 @@ public class Employee implements Serializable {
     private String employeeCode;
 
     // Personal information
+    @NotBlank(message = "First name is required")
     private String firstName;
+
+    @NotBlank(message = "Last name is required")
     private String lastName;
+
+    @Past(message = "Birth date must be in the past")
     private LocalDate birthDate;
+
     private String address;
+
+    @Pattern(regexp = "^\\+?[0-9\\s]{9,15}$", message = "Invalid phone number")
     private String phone;
+
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
     private String email;
+
     private String imageUrl;
 
     // Employment information
+    @NotBlank(message = "Job title is required")
     private String jobTitle;
+
+    @NotBlank(message = "Department is required")
     private String department;
+
+    @NotBlank(message = "Contract type is required")
     private String contractType;
+
+    @PastOrPresent(message = "Date of hire cannot be in the future")
     private LocalDate dateOfHire;
+
+    @Positive(message = "Salary must be greater than 0")
     private Double salary;
+
+    @NotBlank(message = "Status is required")
     private String status;
 
     // Hierarchical relationships and roles
     private Long managerId;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Size(min = 1, message = "At least one role is required")
     private List<String> roles;
 
     // Remarks
