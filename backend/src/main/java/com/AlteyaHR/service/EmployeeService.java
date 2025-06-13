@@ -1,5 +1,6 @@
 package com.AlteyaHR.service;
 
+import com.AlteyaHR.exception.UserNotFoundException;
 import com.AlteyaHR.model.Employee;
 import com.AlteyaHR.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
