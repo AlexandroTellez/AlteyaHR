@@ -5,6 +5,7 @@ import { Employee } from '../../../core/model/employee.model';
 import { EmployeeService } from '../../../core/services/employee-service';
 import { EmployeeCardComponent } from '../components/employee-card/employee-card.component';
 import { EmployeeModalComponent } from '../components/employee-modal/employee-modal.component';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -16,7 +17,8 @@ import { ToastrService } from 'ngx-toastr';
         CommonModule,
         FormsModule,
         EmployeeCardComponent,
-        EmployeeModalComponent
+        EmployeeModalComponent,
+        BreadcrumbComponent
     ]
 })
 export class EmployeePageComponent implements OnInit {
@@ -41,12 +43,10 @@ export class EmployeePageComponent implements OnInit {
         private toastr: ToastrService
     ) { }
 
-    // On component init, load employees
     ngOnInit(): void {
         this.loadEmployees();
     }
 
-    // Fetch all employees from backend
     private loadEmployees(): void {
         this.employeeService.getEmployees().subscribe({
             next: (response: Employee[]) => {
@@ -59,7 +59,6 @@ export class EmployeePageComponent implements OnInit {
         });
     }
 
-    // Search employees based on searchTerm
     onSearch(): void {
         const term = this.searchTerm.toLowerCase();
         this.filteredEmployees = this.employees.filter(emp =>
@@ -70,24 +69,20 @@ export class EmployeePageComponent implements OnInit {
         );
     }
 
-    // Called when clicking on "Add Employee" button
     onAddNewEmployee(): void {
         this.selectedEmployee = this.getEmptyEmployee();
         this.isEditMode = false;
     }
 
-    // Handle event after employee is added or updated (refresh data)
     onEmployeeAdded(): void {
         this.loadEmployees();
     }
 
-    // Handle event when "Edit" is clicked from card
     onEditEmployee(employee: Employee): void {
         this.selectedEmployee = { ...employee };
         this.isEditMode = true;
     }
 
-    // Handle event when Delete is clicked from card
     onDeleteEmployee(employee: Employee): void {
         if (confirm(`Are you sure you want to delete ${employee.firstName} ${employee.lastName}?`)) {
             this.employeeService.deleteEmployee(employee.id!).subscribe({
@@ -103,7 +98,6 @@ export class EmployeePageComponent implements OnInit {
         }
     }
 
-    // Generate empty employee object
     private getEmptyEmployee(): Employee {
         return {
             firstName: '',

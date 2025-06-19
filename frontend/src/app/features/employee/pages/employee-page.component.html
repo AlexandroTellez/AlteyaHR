@@ -1,44 +1,55 @@
-<div class="container-fluid mt-10 p-5 px-5 px-lg-5 px-xl-5">
+<div class="container-fluid p-0">
 
-    <!-- Header: Add Employee Button + Search -->
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <!-- Sticky Breadcrumb -->
+    <app-breadcrumb [items]="[
+    { label: 'Dashboard', icon: 'fa-home', link: '/' },
+    { label: 'Employees', icon: 'fa-users' }
+    ]" title="Employees">
+    </app-breadcrumb>
 
-        <!-- Add Employee Button -->
-        <button class="btn btn-dark fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#employeeModal"
-            (click)="onAddNewEmployee()">
-            <i class="fas fa-user-plus me-2"></i> Add Employee
-        </button>
 
-        <!-- Search Form -->
-        <form class="d-flex mb-2" style="max-width: 300px;" (submit)="onSearch()">
-            <input type="search" [(ngModel)]="searchTerm" name="key" class="form-control me-2"
-                placeholder="Search employees...">
-            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-        </form>
+    <div class="container-fluid mt-4 p-5 px-5 px-lg-5 px-xl-5">
+
+        <!-- Header: Add Employee Button + Search -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+
+            <!-- Add Employee Button -->
+            <button class="btn btn-dark fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#employeeModal"
+                (click)="onAddNewEmployee()">
+                <i class="fas fa-user-plus me-2"></i> Add Employee
+            </button>
+
+            <!-- Search Form -->
+            <form class="d-flex mb-2" style="max-width: 300px;" (submit)="onSearch()">
+                <input type="search" [(ngModel)]="searchTerm" name="key" class="form-control me-2"
+                    placeholder="Search employees...">
+                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+
+        </div>
+
+        <!-- Employee Cards (filtered if search is applied) -->
+        <app-employee-card [employees]="filteredEmployees" (editEmployee)="onEditEmployee($event)"
+            (deleteEmployee)="onDeleteEmployee($event)">
+        </app-employee-card>
+
+        <!-- Modal for both create and edit -->
+        <app-employee-modal [employee]="selectedEmployee" [allEmployees]="employees" [isEditMode]="isEditMode"
+            (employeeAdded)="onEmployeeAdded()">
+        </app-employee-modal>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-start">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
+            </ul>
+        </div>
 
     </div>
-
-    <!-- Employee Cards (filtered if search is applied) -->
-    <app-employee-card [employees]="filteredEmployees" (editEmployee)="onEditEmployee($event)"
-        (deleteEmployee)="onDeleteEmployee($event)">
-    </app-employee-card>
-
-    <!-- Modal for both create and edit -->
-    <app-employee-modal [employee]="selectedEmployee" [allEmployees]="employees" [isEditMode]="isEditMode"
-        (employeeAdded)="onEmployeeAdded()">
-    </app-employee-modal>
-
-    <!-- Pagination -->
-    <div class="d-flex justify-content-start">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
-        </ul>
-    </div>
-
 </div>
