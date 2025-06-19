@@ -1,29 +1,125 @@
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../../core/model/employee.model';
 import { EmployeeService } from '../../../core/services/employee-service';
-import { EmployeeTableComponent } from '../components/employee-table.component';
+import { EmployeeCardComponent } from '../components/employee-card/employee-card.component';
+import { EmployeeModalComponent } from '../components/employee-modal/employee-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-employee-page',
     standalone: true,
     templateUrl: './employee-page.component.html',
     styleUrls: ['./employee-page.component.scss'],
-    imports: [EmployeeTableComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        EmployeeCardComponent,
+        EmployeeModalComponent
+    ]
 })
 export class EmployeePageComponent implements OnInit {
 
+    // Full list of employees
     employees: Employee[] = [];
 
-    constructor(private employeeService: EmployeeService) { }
+    // Filtered list for search
+    filteredEmployees: Employee[] = [];
 
+    // Search term for filtering
+    searchTerm: string = '';
+
+    // Employee object used when opening modal
+    selectedEmployee: Employee = this.getEmptyEmployee();
+
+    // Flag to control if modal is opened in edit mode or add mode
+    isEditMode: boolean = false;
+
+    constructor(
+        private employeeService: EmployeeService,
+        private toastr: ToastrService
+    ) { }
+
+    // On component init, load employees
     ngOnInit(): void {
-        this.employeeService.getEmployees().subscribe(
-            (response: Employee[]) => {
+        this.loadEmployees();
+    }
+
+    // Fetch all employees from backend
+    private loadEmployees(): void {
+        this.employeeService.getEmployees().subscribe({
+            next: (response: Employee[]) => {
                 this.employees = response;
+                this.filteredEmployees = response;
             },
-            (error) => {
+            error: (error) => {
                 console.error('Error fetching employees:', error);
             }
+        });
+    }
+
+    // Search employees based on searchTerm
+    onSearch(): void {
+        const term = this.searchTerm.toLowerCase();
+        this.filteredEmployees = this.employees.filter(emp =>
+            emp.firstName.toLowerCase().includes(term) ||
+            emp.lastName.toLowerCase().includes(term) ||
+            emp.jobTitle.toLowerCase().includes(term) ||
+            emp.department.toLowerCase().includes(term)
         );
+    }
+
+    // Called when clicking on "Add Employee" button
+    onAddNewEmployee(): void {
+        this.selectedEmployee = this.getEmptyEmployee();
+        this.isEditMode = false;
+    }
+
+    // Handle event after employee is added or updated (refresh data)
+    onEmployeeAdded(): void {
+        this.loadEmployees();
+    }
+
+    // Handle event when "Edit" is clicked from card
+    onEditEmployee(employee: Employee): void {
+        this.selectedEmployee = { ...employee };
+        this.isEditMode = true;
+    }
+
+    // Handle event when Delete is clicked from card
+    onDeleteEmployee(employee: Employee): void {
+        if (confirm(`Are you sure you want to delete ${employee.firstName} ${employee.lastName}?`)) {
+            this.employeeService.deleteEmployee(employee.id!).subscribe({
+                next: () => {
+                    this.toastr.success('Employee deleted successfully!');
+                    this.loadEmployees();
+                },
+                error: (error) => {
+                    console.error('Error deleting employee:', error);
+                    this.toastr.error('Failed to delete employee.');
+                }
+            });
+        }
+    }
+
+    // Generate empty employee object
+    private getEmptyEmployee(): Employee {
+        return {
+            firstName: '',
+            lastName: '',
+            birthDate: '',
+            address: '',
+            phone: '',
+            email: '',
+            imageUrl: '',
+            jobTitle: '',
+            department: '',
+            contractType: '',
+            dateOfHire: '',
+            salary: 0,
+            status: 'Active',
+            roles: []
+        };
     }
 }

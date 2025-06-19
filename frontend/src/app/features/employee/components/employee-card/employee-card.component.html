@@ -1,0 +1,45 @@
+<!-- Grid of employee cards -->
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let employee of employees">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+
+                <!-- Employee photo -->
+                <img [src]="employee.imageUrl ? employee.imageUrl : 'https://cdn-icons-png.flaticon.com/512/847/847969.png'"
+                    alt="Profile" class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+
+                <!-- Name and title -->
+                <h5 class="card-title mb-1">{{ employee.firstName }} {{ employee.lastName }}</h5>
+                <p class="text-muted mb-2">{{ employee.jobTitle }} - {{ employee.department }}</p>
+
+                <!-- Status badge -->
+                <span class="badge mb-2" [ngClass]="getBadgeClass(employee.status)">
+                    {{ employee.status }}
+                </span>
+
+                <!-- Contact info -->
+                <p class="mb-0"><i class="fas fa-phone me-1"></i>{{ employee.phone }}</p>
+                <p><i class="fas fa-envelope me-1"></i>{{ employee.email }}</p>
+
+                <!-- Action buttons -->
+                <div class="d-flex justify-content-center">
+                    <!-- Edit button emits selected employee -->
+                    <button class="btn btn-sm btn-warning me-2" title="Edit" data-bs-toggle="modal"
+                        data-bs-target="#employeeModal" (click)="onEditEmployee(employee)">
+                        <i class="fas fa-pen-to-square"></i>
+                    </button>
+
+                    <!-- Delete button -->
+                    <button class="btn btn-sm btn-danger" title="Delete" (click)="onDeleteEmployee(employee)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer with hire date -->
+            <div class="card-footer text-muted text-center">
+                Hire Date: {{ employee.dateOfHire }}
+            </div>
+        </div>
+    </div>
+</div>

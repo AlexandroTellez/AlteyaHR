@@ -1,0 +1,170 @@
+<div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="employeeModalLabel">
+                    {{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form (ngSubmit)="onSubmit()" #form="ngForm">
+                    <div class="row g-3">
+
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" required [(ngModel)]="employee.firstName"
+                                name="firstName" placeholder="e.g. John">
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" required [(ngModel)]="employee.lastName"
+                                name="lastName" placeholder="e.g. Doe">
+                        </div>
+
+                        <!-- Birth Date -->
+                        <div class="col-md-6">
+                            <label class="form-label">Birth Date</label>
+                            <input type="date" class="form-control" required [(ngModel)]="employee.birthDate"
+                                name="birthDate">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-md-6">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" [(ngModel)]="employee.address" name="address"
+                                placeholder="e.g. 123 Main St, New York">
+                        </div>
+
+                        <!-- Job Title -->
+                        <div class="col-md-6">
+                            <label class="form-label">Job Title</label>
+                            <input type="text" class="form-control" required [(ngModel)]="employee.jobTitle"
+                                name="jobTitle" placeholder="e.g. Software Engineer">
+                        </div>
+
+                        <!-- Department -->
+                        <div class="col-md-6">
+                            <label class="form-label">Department</label>
+                            <input type="text" class="form-control" required [(ngModel)]="employee.department"
+                                name="department" placeholder="e.g. IT Department">
+                        </div>
+
+                        <!-- Contract Type -->
+                        <div class="col-md-6">
+                            <label class="form-label">Contract Type</label>
+                            <select class="form-select" required [(ngModel)]="employee.contractType"
+                                name="contractType">
+                                <option value="">-- Select Contract Type --</option>
+                                <option value="Permanent">Permanent</option>
+                                <option value="Temporary">Temporary</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Replacement">Replacement</option>
+                                <option value="Freelance">Freelance / Contractor</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Apprenticeship">Apprenticeship</option>
+                            </select>
+                        </div>
+
+                        <!-- Date of Hire -->
+                        <div class="col-md-6">
+                            <label class="form-label">Date of Hire</label>
+                            <input type="date" class="form-control" required [(ngModel)]="employee.dateOfHire"
+                                name="dateOfHire">
+                        </div>
+
+                        <!-- Salary -->
+                        <div class="col-md-6">
+                            <label class="form-label">Salary (USD)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" [(ngModel)]="employee.salary" name="salary"
+                                    min="0" step="0.01" placeholder="e.g. 50000">
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" required [(ngModel)]="employee.status" name="status">
+                                <option value="Active">Active</option>
+                                <option value="Banned">Banned</option>
+                                <option value="Pending">Pending</option>
+                                <option value="On Leave">On Leave</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="employee.phone" name="phone"
+                                placeholder="e.g. +1 123 456 7890">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required [(ngModel)]="employee.email" name="email"
+                                placeholder="e.g. john.doe@example.com">
+                        </div>
+
+                        <!-- Manager -->
+                        <div class="col-md-6">
+                            <label class="form-label">Manager</label>
+                            <select class="form-select" [(ngModel)]="employee.managerId" name="managerId">
+                                <option [ngValue]="null">No Manager</option>
+                                <option *ngFor="let mgr of allEmployees" [ngValue]="mgr.id">
+                                    {{ mgr.firstName }} {{ mgr.lastName }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Roles -->
+                        <div class="col-md-12">
+                            <label class="form-label">Roles (separated by commas)</label>
+                            <input type="text" class="form-control" [(ngModel)]="rolesString" name="rolesString"
+                                placeholder="e.g. ADMIN, HR, FINANCE">
+                            <div *ngIf="rolesError" class="text-danger mt-1">
+                                At least one role is required.
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="col-md-12">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" rows="3" [(ngModel)]="employee.notes" name="notes"
+                                placeholder="Additional remarks..."></textarea>
+                        </div>
+
+                        <!-- Image URL -->
+                        <div class="col-md-12">
+                            <label class="form-label">Image URL</label>
+                            <input type="text" class="form-control" [(ngModel)]="employee.imageUrl" name="imageUrl"
+                                placeholder="e.g. https://example.com/profile.jpg">
+                        </div>
+
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-success"
+                            [disabled]="rolesString.trim() === '' || isSubmitting">
+                            {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update' : 'Save') }}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
