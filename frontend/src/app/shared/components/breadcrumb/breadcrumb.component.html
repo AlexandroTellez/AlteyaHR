@@ -1,0 +1,24 @@
+<div class="sticky-top bg-white p-4 shadow-sm">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <ng-container *ngFor="let item of items; let last = last">
+                <li class="breadcrumb-item" [class.active]="last" [attr.aria-current]="last ? 'page' : null">
+                    <ng-container *ngIf="!last && item.link; else activeLabel">
+                        <a [routerLink]="item.link" style="color: #ffc107; text-decoration: none;">
+                            <i *ngIf="item.icon" class="fas {{item.icon}} me-1"></i> {{item.label}}
+                        </a>
+                    </ng-container>
+                    <ng-template #activeLabel>
+                        <span style="color: #1A1A1A;">
+                            <i *ngIf="item.icon" class="fas {{item.icon}} me-1"></i> {{item.label}}
+                        </span>
+                    </ng-template>
+                </li>
+            </ng-container>
+        </ol>
+
+        <h2 class="fw-bold mt-2 p-2" style="color: #1A1A1A;">
+            <i class="fas fa-id-card me-2"></i> {{title}}
+        </h2>
+    </nav>
+</div>

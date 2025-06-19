@@ -9,7 +9,11 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NavbarComponent,
+  ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
   providers: [EmployeeService]
@@ -34,5 +38,4 @@ export class App implements OnInit {
       }
     );
   }
-
 }
