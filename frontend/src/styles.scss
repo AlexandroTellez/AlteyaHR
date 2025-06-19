@@ -1,9 +1,21 @@
-@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
-@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+/* Ajuste responsive personalizado para el navbar */
 
-body {
-    margin-top: 20px;
+@media (max-width: 1279px) {
+    .responsive-collapse {
+        justify-content: center !important;
+    }
+
+    .responsive-collapse .nav-link {
+        text-align: center !important;
+    }
 }
+
+@media (min-width: 1280px) {
+    .responsive-collapse ul.navbar-nav {
+        margin-left: auto !important;
+    }
+}
+
 
 /* USER LIST TABLE */
 .user-list tbody td>img {
@@ -63,24 +75,6 @@ body {
 
 .table thead>tr>th>a span {
     color: #344644;
-}
-
-.table thead>tr>th>a span:after {
-    content: "\f0dc";
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    margin-left: 5px;
-    font-size: 0.75em;
-}
-
-.table thead>tr>th>a.asc span:after {
-    content: "\f0dd";
-}
-
-.table thead>tr>th>a.desc span:after {
-    content: "\f0de";
 }
 
 .table thead>tr>th>a:hover span {
@@ -209,4 +203,23 @@ body {
 
 .table-stats .table-line-plus .status-social-icon {
     color: #a75d54;
+}
+
+/* Success Toast (green background) */
+.toast-success {
+    background-color: #28a745 !important; // Bootstrap green
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Error Toast (red background) */
+.toast-error {
+    background-color: #dc3545 !important; // Bootstrap red
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Optional: make all toasts a bit larger */
+.toast {
+    font-size: 1.1rem;
 }
